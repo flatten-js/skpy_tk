@@ -38,14 +38,14 @@ class MoneyForward:
     return driver
 
   def clock_in(self):
-    driver = login()
+    driver = self.login()
 
     el = driver.find_element(By.CLASS_NAME, "clock_in")
     el = el.find_element(By.TAG_NAME, "button")
     el.click()
 
   def clock_out(self):
-    driver = login()
+    driver = self.login()
 
     el = driver.find_element(By.CLASS_NAME, "clock_out")
     el = el.find_element(By.TAG_NAME, "button")
