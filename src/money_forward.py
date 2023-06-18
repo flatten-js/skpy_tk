@@ -15,6 +15,8 @@ class MoneyForward:
   def login(self):
     opts = Options()
     opts.add_argument('--headless')
+    opts.add_argument("--no-sandbox")
+    opts.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(options=opts)
     driver.implicitly_wait(3)
     

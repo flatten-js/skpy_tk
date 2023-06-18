@@ -5,7 +5,7 @@ import os
 
 SKYPE_EMAIL = os.environ.get('SKYPE_EMAIL', '')
 SKYPE_PASSWORD = os.environ.get('SKYPE_PASSWORD', '')
-SKYPE_USER_ID = os.environ.get('SKYPE_USER_ID', '')
+SKYPE_USER_ID = os.environ.get('SKYPE_USER_ID', '').split(',')
 SKYPE_REPORT_USER_ID = os.environ.get('SKYPE_REPORT_USER_ID', '')
 SKYPE_CHAT_ID = os.environ.get('SKYPE_CHAT_ID', '')
 SKYPE_CLOCK_IN_MESSAGE = os.environ.get('SKYPE_CLOCK_IN_MESSAGE', 'おはようございます')

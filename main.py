@@ -21,7 +21,7 @@ mf = MoneyForward(MONEY_FORWARD_EMAIL, MONEY_FORWARD_PASSWORD)
 
 def handler(event):
   content = event.msg.content
-  if event.msg.userId != SKYPE_USER_ID: return
+  if event.msg.userId not in SKYPE_USER_ID: return
 
   try:
     if re.search(SKYPE_CLOCK_IN_MESSAGE, content):
@@ -30,6 +30,8 @@ def handler(event):
     elif re.search(SKYPE_CLOCK_OUT_MESSAGE, content):
       mf.clock_out()
       report = "退勤しました"
+    else:
+      return
 
     print(report)
     if SKYPE_REPORT_USER_ID:
