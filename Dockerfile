@@ -9,5 +9,7 @@ RUN pip install pipenv
 
 COPY Pipfile Pipfile.lock .
 RUN pipenv install --system
+# RUN pipenv install --dev --system
 
 CMD ["python", "main.py"]
+# CMD ["python", "-m", "debugpy", "--listen", "5678", "main.py"]

@@ -1,5 +1,8 @@
+import logging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s:%(name)s - %(message)s")
+logger = logging.getLogger(__name__)
+
 import re
-import sys
 
 from config import \
   SKYPE_EMAIL, \
@@ -16,10 +19,7 @@ from config import \
 from src.skype import SkypeMessageEvent
 from src.money_forward import MoneyForward
 
-sme = SkypeMessageEvent(SKYPE_EMAIL, SKYPE_PASSWORD, SKYPE_CHAT_ID)
-mf = MoneyForward(MONEY_FORWARD_EMAIL, MONEY_FORWARD_PASSWORD)
-
-def handler(event):
+def handler(sme, event):
   content = event.msg.content
   if event.msg.userId not in SKYPE_USER_ID: return
 
@@ -33,15 +33,24 @@ def handler(event):
     else:
       return
 
-    print(report)
+    logger.info(report)
     if SKYPE_REPORT_USER_ID:
       sme.contacts[SKYPE_REPORT_USER_ID].chat.sendMsg(report)
 
   except Exception as e:
     error_message = f'エラー: 出退勤が完了していない可能性があります。\n{e}'
-    print(error_message)
+    logger.exception(error_message)
     if SKYPE_REPORT_USER_ID:
       sme.contacts[SKYPE_REPORT_USER_ID].chat.sendMsg(error_message)
- 
-sme.on_event(handler)
-sme.loop(SKYPE_LOOP_PERIOD)
+
+
+logger.info('System startup')
+mf = MoneyForward(MONEY_FORWARD_EMAIL, MONEY_FORWARD_PASSWORD)
+while True:
+  try:
+    sme = SkypeMessageEvent(SKYPE_EMAIL, SKYPE_PASSWORD, SKYPE_CHAT_ID)
+
+    logger.info('Monitoring SkypeMessageEvent...')
+    sme.on_event(handler, SKYPE_LOOP_PERIOD)
+  except Exception as e:
+    logger.exception('SkypeMessageEvent connection lost...')

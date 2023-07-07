@@ -1,6 +1,6 @@
 import time
 import requests
-from skpy import Skype, SkypeEventLoop
+from skpy import SkypeEventLoop
 
 
 class SkypeMessageEvent(SkypeEventLoop):
@@ -20,17 +20,15 @@ class SkypeMessageEvent(SkypeEventLoop):
       if event.__class__.__name__ != 'SkypeNewMessageEvent': continue
       if event.msg.chatId != self.chat_id: continue
 
-      self.__onEvent(event)
+      self.handler(self, event)
       if self.autoAck:
           event.ack()
 
-  def loop(self, period = 1):
+  def __loop(self, period = 1):
     while True:
       self.cycle()
-      time.sleep(int(period))
+      time.sleep(period)
   
-  def on_event(self, handler):
+  def on_event(self, handler, period = 1):
     self.handler = handler
-
-  def __onEvent(self, event):
-    self.handler(event)
+    self.__loop(int(period))
