@@ -28,13 +28,13 @@ class MoneyForward:
     el = driver.find_element(By.NAME, "mfid_user[email]")
     el.send_keys(self.email)
 
-    el = driver.find_element(By.CSS_SELECTOR, ".LjJ8E2j_.submitBtn._AUBUrBM.bizDomain")
+    el = driver.find_element(By.ID, "submitto")
     el.click()
 
     el = driver.find_element(By.NAME, "mfid_user[password]")
     el.send_keys(self.password)
 
-    el = driver.find_element(By.CSS_SELECTOR, ".LjJ8E2j_.submitBtn._AUBUrBM.bizDomain")
+    el = driver.find_element(By.ID, "submitto")
     el.click()
 
     return driver
